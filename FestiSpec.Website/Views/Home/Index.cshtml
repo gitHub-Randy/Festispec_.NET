@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "Home";
+}
+
+<div class="row h1 justify-content-center">
+    <h1>Welkom @Session["UserName"].ToString()</h1>
+</div>
+
+<div class="row justify-content-center" style="margin-top: 5%; margin-bottom: 5%;">
+    <div class="col-md-4" style="text-align: center">
+        <div class="text-secondary h3">
+            <a href="~/Schedule/Index"><i class="far fa-calendar-alt fa-10x"></i></a>
+        </div>
+        <h2 style="text-align: center">Rooster</h2>
+    </div>
+    <div class="col-md-4" style="text-align: center">
+        <div class="text-secondary h3">
+            <a href="~/Home/Availability"><i class="far fa-clock fa-10x"></i></a>
+        </div>
+        <h2>Absentie</h2>
+    </div>
+</div>

@@ -1,0 +1,70 @@
+﻿@model IEnumerable<FestiSpec.Entity.Inspection>
+
+@{
+    ViewBag.Title = "Schedule";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Rooster</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            Gebruikersnaam
+        </th>
+        <th>
+            Festivalnaam
+        </th>
+        <th>
+            Startdatum
+        </th>
+        <th>
+            Einddatum
+        </th>
+        <th>
+            Aanwezig
+        </th>
+        <th>
+            Reden Afwezig
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Employee.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.QuestionList.Festival.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StartDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EndDate)
+        </td>
+        <td>
+            @if (item.Present)
+            {
+                <label>Ja</label>
+            }
+            else
+            {
+                <label>Nee</label>
+            }
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReasonsAbsent)
+        </td>
+        <td>
+            @Html.ActionLink("Details", "Details", new { item.QuestionList.Festival.Id })
+        </td>
+        <td>
+            @*@Html.ActionLink("Fill in", "QuestionList", "QuestionLists", new { id = item.Festival.QuestionLists.FirstOrDefault().Id, index = 1 }, null)*@
+            @Html.ActionLink("Invullen", "QuestionList", "QuestionLists", new { id = item.QuestionList.Id, index = 1, inspectionId = item.Id }, null)
+        </td>
+    </tr>
+}
+
+</table>

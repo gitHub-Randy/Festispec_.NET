@@ -1,0 +1,45 @@
+﻿<UserControl x:Class="FestiSpec.Views.Question.Pages.TypeChooserView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FestiSpec.Views.Question.Pages"
+             xmlns:h="clr-namespace:FestiSpec.Helper"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" 
+             DataContext="{Binding Questionnaire, Source={StaticResource Locator}}">
+    <StackPanel>
+        <ScrollViewer MaxHeight="650">
+            <StackPanel>
+                <TextBlock Margin="5" FontSize="50"  Text="Kies een vraagtype:"></TextBlock>
+
+                <ItemsControl ItemsSource="{Binding Qtype}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" Margin="0,0,155,0"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate >
+                        <DataTemplate>
+                            <StackPanel Margin="5" >
+                                <Grid>
+                                    <Button Margin="5"  Width="150" Height="50" FontSize="16"  Command="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl}, Path=DataContext.CreateQuestionCMD}" CommandParameter="{Binding Type}" >
+                                        <TextBlock>
+                                                    <Run Text="{Binding Type}"></Run>
+                                            <LineBreak/>
+                                                    <Run FontSize="10" Text="{Binding Description}"></Run>
+                                        </TextBlock>
+                                    </Button>
+                                </Grid>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+            </StackPanel>
+        </ScrollViewer>
+        <StackPanel VerticalAlignment="Bottom" Visibility="Visible">
+            <Button Content="Terug" Command="{Binding BackCMD}"></Button>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

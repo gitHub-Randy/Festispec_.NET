@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="FestiSpec.Views.Question.Pages.CreateEditQuestionView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FestiSpec.Views.Question"
+        xmlns:helper="clr-namespace:FestiSpec.Helper"
+        mc:Ignorable="d"
+       Height="300" Width="500"
+        DataContext="{Binding Questionnaire, Source={StaticResource Locator}}">
+    <UserControl.Resources>
+        <helper:ItemTemplateSelector x:Key="QuestionTypeTemplateSelector"/>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+    </UserControl.Resources>
+    <ScrollViewer MaxHeight="350">
+        <StackPanel Width="300">
+            <TextBlock Text="Vraag" FontSize="28"/>
+            <TextBlock Text="Vraag:*" Margin="5,5,0,0"  />
+            <TextBox Margin="5,0,5,0" AcceptsReturn="True" TextWrapping="Wrap"   MaxLength="300" Text="{Binding SelectedQuestion.QuestionText , UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=CanEditQuestion}"/>
+            <TextBlock Margin="5,5,0,0">Omschrijving:</TextBlock>
+            <TextBox Margin="5,0,5,0" AcceptsReturn="True" TextWrapping="Wrap"  Text="{Binding SelectedQuestion.Description, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=CanEditQuestion}"></TextBox>
+            <TextBlock Margin="5,5,0,0" Text="Vraag type: " />
+            <WrapPanel Margin="5,0,5,0">
+                <TextBlock Background="Orange" Foreground="White" Text="{Binding SelectedType.Type}"></TextBlock>
+            </WrapPanel>
+            <ContentControl Margin="5,5,0,0"  Content="{Binding SelectedType, Converter={StaticResource QuestionTypeTemplateSelector}}"></ContentControl>
+            <Grid>
+                <Button HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Terug" Command="{Binding BackCMD}" CommandParameter ="1"
+                    Width="100"  Margin="5,5,0,0" />
+                <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Opslaan" Command="{Binding AddQuestionCMD}" CommandParameter="{Binding AddQuestionCommand}"
+                    Width="100"  Margin="5,5,0,0" Visibility="{Binding Path=CanEditQuestionList, Converter={StaticResource BoolToVis}}"  />
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

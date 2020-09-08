@@ -1,0 +1,54 @@
+﻿<Window x:Class="FestiSpec.Views.Schedule.ScheduleView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        DataContext="{Binding EmployeeListViewModel, Source={StaticResource Locator}}"
+        Title="Rooster" SizeToContent="WidthAndHeight"
+        WindowStartupLocation="CenterScreen"
+        MinHeight="550" MinWidth="1050">
+    <StackPanel Orientation="Horizontal">
+        <Grid Name="LeftPane">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0">
+                <Button Command="{Binding BackCommand}">Terug</Button>
+            </StackPanel>
+            <StackPanel Grid.Row="1"
+                        Grid.ColumnSpan="1"
+                        Orientation="Horizontal">
+                <TextBox Width="150px" Text="{Binding FilterInputString}"></TextBox>
+                <Button Height="25" Width="50px" Name="SearchBtn" VerticalAlignment="Top" Margin="3,0"
+                        Command="{Binding FilterGridCommand}">
+                    Zoeken
+                </Button>
+            </StackPanel>
+            <StackPanel Grid.Row="2"
+                        Grid.ColumnSpan="1"
+                        Orientation="Vertical" Margin="0,2,0,0">
+                <DataGrid ItemsSource="{Binding Employees}" SelectedItem="{Binding SelectedEmployee}" IsReadOnly="True"
+                          AutoGenerateColumns="False" SelectionMode="Single">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Width="200" Header="Medewerkers" Binding="{Binding Name}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+        </Grid>
+        <StackPanel Name="RightPane" Width="800">
+            <TabControl>
+                <TabItem Header="Rooster">
+                    <Frame Name="Rooster" Source="SchedulePage.xaml" />
+                </TabItem>
+            </TabControl>
+        </StackPanel>
+    </StackPanel>
+</Window>

@@ -1,0 +1,40 @@
+﻿<Window x:Class="FestiSpec.Views.LoginView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FestiSpec.Views"
+        mc:Ignorable="d"
+        Title="Login" Height="580" Width="450"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        DataContext="{Binding Login, Source={StaticResource Locator}}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="75"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="25"/>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="25" />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Row="1" Grid.Column="1" FocusManager.FocusedElement="{Binding ElementName=acc}">
+            <Image Width="200" Height="150" HorizontalAlignment="Center" Margin="10" Source="pack://application:,,,/Images/festispec.jpg"/>
+            <!-- username -->
+            <TextBlock HorizontalAlignment="Center" Margin="0,0,60,0">Gebruikersnaam:</TextBlock>
+            <TextBox Name="acc"  Width="150" HorizontalAlignment="Center" Text = "{Binding Path=Username, Mode = TwoWay}" ></TextBox>
+            <!-- password -->
+            <TextBlock HorizontalAlignment="Center" Margin="0,10,80,0" >Wachtwoord:</TextBlock>
+            <PasswordBox Name="PasswordBox" Width="150" HorizontalAlignment="Center" PasswordChar="*"></PasswordBox>
+            <!-- login Button -->
+            <Button HorizontalAlignment="Center" Width="150" Margin="0,10,0,0" Command="{Binding Path=_passwordCommand}" CommandParameter="{Binding ElementName=PasswordBox}" IsDefault="True">Login</Button>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
+            <TextBlock VerticalAlignment="Center" Margin="225,0,0,0">a S.O.n product</TextBlock>
+            <Image Width="100" Height="100" VerticalAlignment="Center" Source="pack://application:,,,/Images/SON_logo.png"/>
+        </StackPanel>
+    </Grid>
+</Window>

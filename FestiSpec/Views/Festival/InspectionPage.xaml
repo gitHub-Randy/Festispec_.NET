@@ -1,0 +1,56 @@
+﻿<Page x:Class="FestiSpec.Views.Festival.InspectionPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:FestiSpec.Views.Festival"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="500"
+      Title="InspectionPage"
+      DataContext="{Binding FestivalListViewModel,  Source={StaticResource Locator}}">
+    <Page.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+        <!-- Converts boolean to visibilty value-->
+    </Page.Resources>
+
+    <StackPanel Height="400">
+        <DataGrid SelectedItem="{Binding SelectedInspection}" ItemsSource="{Binding SelectedFestivalInspections}" AutoGenerateColumns="False" IsReadOnly="True" Height="200">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Inspecteur" Binding="{Binding Model.Employee.Name}"/>
+                <DataGridTextColumn Header="Start Datum" Binding="{Binding StartDate}"/>
+                <DataGridTextColumn Header="Eind Datum" Binding="{Binding EndDate}"/>
+                <DataGridTextColumn Header="Aanwezig" Binding="{Binding Present}"/>
+                <DataGridTextColumn Header="Reden Absent" Binding="{Binding ReasonsAbsent}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        
+        <Button Background="#099792" Height="20" Name="AddInspection" Command="{Binding OpenAddInspectionViewCommand}" HorizontalAlignment="Left">
+            <Button.BorderBrush>
+                <ImageBrush/>
+            </Button.BorderBrush>
+            <Button.Content>
+                <TextBlock Text="Voeg Inspectie Toe"/>
+            </Button.Content>
+        </Button>
+            
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Visibility="{Binding Path=InspectionSelected, Converter={StaticResource BoolToVis}}" IsEnabled="{Binding IsInspectionWindowClosed}" Background="#FF0000" Height="20" Name="DeleteInspection" Command="{Binding DeleteInspectionCommand}" HorizontalAlignment="Center">
+                <Button.BorderBrush>
+                    <ImageBrush/>
+                </Button.BorderBrush>
+                <Button.Content>
+                    <TextBlock Text="Verwijder Inspectie"/>
+                </Button.Content>
+            </Button>
+            
+            <Button Visibility="{Binding Path=InspectionSelected, Converter={StaticResource BoolToVis}}" IsEnabled="{Binding IsInspectionWindowClosed}" Background="LightGreen" Height="20" Name="EditInspection" Command="{Binding OpenInspectionViewCommand}" HorizontalAlignment="Right">
+                <Button.BorderBrush>
+                    <ImageBrush/>
+                </Button.BorderBrush>
+                <Button.Content>
+                    <TextBlock Text="Bewerk Inspectie"/>
+                </Button.Content>
+            </Button>
+        </StackPanel>
+    </StackPanel>
+</Page>

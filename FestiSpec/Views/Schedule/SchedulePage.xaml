@@ -1,0 +1,91 @@
+﻿<Page x:Class="FestiSpec.Views.Schedule.SchedulePage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:utils="using:FesiSpec.ViewModel.Schedule"
+        xmlns:utils1="clr-namespace:FestiSpec.ViewModel.Schedule"
+        mc:Ignorable="d"
+        DataContext="{Binding InspectionListViewModel, Source={StaticResource Locator}}"
+        Title="InspectScheduleView" Height="450" Width="840">
+    <Page.Resources>
+        <utils1:PresentStringColorConverter x:Key="stringConverter" />
+    
+    </Page.Resources>
+   
+    <StackPanel>
+        <TextBlock FontSize="28" TextAlignment="Center"> Inspectie Rooster</TextBlock>
+        <StackPanel Orientation="Horizontal">
+            <Button Background="Pink" Margin="10,10,46,10" Width="50" Height="20px" Name="PreviousWeek" Command="{Binding PreviousWeekCommand}" HorizontalAlignment="Left">
+                <Button.Content>
+                    <TextBlock  Text="&lt;"/>
+                </Button.Content>
+            </Button>
+            <Button Background="Pink" Margin="250,10,46,10" Width="100" Height="20px" Name="CurrentWeek" Command="{Binding BackToCurrentWeek}" HorizontalAlignment="Right">
+                <Button.Content>
+                    <TextBlock  Text="Huidige Week"/>
+                </Button.Content>
+            </Button>
+            <TextBlock Margin="10,10,0,10" Text="{Binding CurrentWeek}"></TextBlock>
+            <Button Background="Pink" Margin="150,10,46,10" Width="50" Height="20px" Name="NextWeek" Command="{Binding NextWeekCommand}" HorizontalAlignment="Right">
+                <Button.Content>
+                    <TextBlock  Text=">"/>
+                </Button.Content>
+            </Button>
+        </StackPanel>
+
+
+        <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Margin="0,0,10,0">Maandag</TextBlock>
+                <TextBlock Margin="0,0,10,0" Text="{Binding WeekSlots[0].ScheduleDate}"></TextBlock>
+                <TextBlock Margin="0,0,10,0" MaxWidth="100" Width="100" Text="{Binding Path=WeekSlots[0].Start}" Background="{Binding WeekSlots[0], Converter={StaticResource stringConverter}}"></TextBlock>
+                <TextBlock Margin="0,0,10,0" MaxWidth="100" Width="100" Text="{Binding Path=WeekSlots[0].End}" Background="{Binding WeekSlots[0], Converter={StaticResource stringConverter}}"></TextBlock>
+                <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,10,0" MaxWidth="100" Width="100" Text="{Binding Path=WeekSlots[0].Festival}" Background="{Binding WeekSlots[0], Converter={StaticResource stringConverter}}"></TextBlock>
+            </StackPanel>
+            <StackPanel Orientation="Vertical">
+                <TextBlock Margin="0,0,10,0">Dinsdag</TextBlock>
+                <TextBlock Margin="0,0,10,0" Text="{Binding WeekSlots[1].ScheduleDate}"></TextBlock>
+                <TextBlock Margin="0,0,10,0" MaxWidth="100" Width="100" Text="{Binding WeekSlots[1].Start}" Background="{Binding WeekSlots[1], Converter={StaticResource stringConverter}}"></TextBlock>
+                <TextBlock Margin="0,0,10,0" MaxWidth="100" Width="100" Text="{Binding WeekSlots[1].End}" Background="{Binding WeekSlots[1], Converter={StaticResource stringConverter}}"></TextBlock>
+                <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,10,0" MaxWidth="100" Width="100" Text="{Binding WeekSlots[1].Festival}" Background="{Binding WeekSlots[1], Converter={StaticResource stringConverter}}"></TextBlock>
+            </StackPanel>
+            <StackPanel Orientation="Vertical">
+                <TextBlock Margin="0,0,10,0">Woensdag</TextBlock>
+                <TextBlock Margin="0,0,10,0" Text="{Binding WeekSlots[2].ScheduleDate}"></TextBlock>
+                <TextBlock Margin="0,0,10,0" MaxWidth="100" Width="100" Text="{Binding WeekSlots[2].Start}" Background="{Binding WeekSlots[2], Converter={StaticResource stringConverter}}"></TextBlock>
+                <TextBlock Margin="0,0,10,0" MaxWidth="100" Width="100" Text="{Binding WeekSlots[2].End}" Background="{Binding WeekSlots[2], Converter={StaticResource stringConverter}}"></TextBlock>
+                <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,10,0" MaxWidth="100" Width="100" Text="{Binding WeekSlots[2].Festival}" Background="{Binding WeekSlots[2], Converter={StaticResource stringConverter}}"></TextBlock>
+            </StackPanel>
+            <StackPanel Orientation="Vertical">
+                <TextBlock Margin="0,0,10,0">Donderdag</TextBlock>
+                <TextBlock Margin="0,0,10,0" Text="{Binding WeekSlots[3].ScheduleDate}"></TextBlock>
+                <TextBlock Margin="0,0,10,0" MaxWidth="100" Width="100" Text="{Binding WeekSlots[3].Start}" Background="{Binding WeekSlots[3], Converter={StaticResource stringConverter}}"></TextBlock>
+                <TextBlock Margin="0,0,10,0" MaxWidth="100" Width="100" Text="{Binding WeekSlots[3].End}" Background="{Binding WeekSlots[3], Converter={StaticResource stringConverter}}"></TextBlock>
+                <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,10,0" MaxWidth="100" Width="100" Text="{Binding WeekSlots[3].Festival}" Background="{Binding WeekSlots[3], Converter={StaticResource stringConverter}}"></TextBlock>
+            </StackPanel>
+            <StackPanel Orientation="Vertical">
+                <TextBlock Margin="0,0,10,0">Vrijdag</TextBlock>
+                <TextBlock Margin="0,0,10,0" Text="{Binding WeekSlots[4].ScheduleDate}"></TextBlock>
+                <TextBlock Margin="0,0,10,0" MaxWidth="100" Width="100" Text="{Binding WeekSlots[4].Start}" Background="{Binding WeekSlots[4], Converter={StaticResource stringConverter}}"></TextBlock>
+                <TextBlock Margin="0,0,10,0" MaxWidth="100" Width="100" Text="{Binding WeekSlots[4].End}" Background="{Binding WeekSlots[4], Converter={StaticResource stringConverter}}"></TextBlock>
+                <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,10,0" MaxWidth="100" Width="100" Text="{Binding WeekSlots[4].Festival}" Background="{Binding WeekSlots[4], Converter={StaticResource stringConverter}}"></TextBlock>
+            </StackPanel>
+            <StackPanel Orientation="Vertical">
+                <TextBlock Margin="0,0,10,0">Zaterdag</TextBlock>
+                <TextBlock Margin="0,0,10,0" Text="{Binding WeekSlots[5].ScheduleDate}"></TextBlock>
+                <TextBlock Margin="0,0,10,0" MaxWidth="100" Width="100" Text="{Binding WeekSlots[5].Start}" Background="{Binding WeekSlots[5], Converter={StaticResource stringConverter}}"></TextBlock>
+                <TextBlock Margin="0,0,10,0" MaxWidth="100" Width="100" Text="{Binding WeekSlots[5].End}" Background="{Binding WeekSlots[5], Converter={StaticResource stringConverter}}"></TextBlock>
+                <TextBlock Margin="0,0,10,0" MaxWidth="100" Width="100" Text="{Binding WeekSlots[5].Festival}" Background="{Binding WeekSlots[5], Converter={StaticResource stringConverter}}"></TextBlock>
+            </StackPanel>
+            <StackPanel Orientation="Vertical">
+                <TextBlock Margin="0,0,10,0">Zondag</TextBlock>
+                <TextBlock Margin="0,0,10,0" Text="{Binding WeekSlots[6].ScheduleDate}"></TextBlock>
+                <TextBlock Margin="0,0,10,0" MaxWidth="100"  Width="100"  Text="{Binding WeekSlots[6].Start}" Background="{Binding WeekSlots[6], Converter={StaticResource stringConverter}}"></TextBlock>
+                <TextBlock Margin="0,0,10,0" MaxWidth="100" Width="100" Text="{Binding WeekSlots[6].End}" Background="{Binding WeekSlots[6], Converter={StaticResource stringConverter}}"></TextBlock>
+                <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,10,0"   MaxWidth="100" Width="100" Text="{Binding WeekSlots[6].Festival}" Background="{Binding WeekSlots[6], Converter={StaticResource stringConverter}}"></TextBlock>
+            </StackPanel>
+        </StackPanel>
+
+    </StackPanel>
+</Page>

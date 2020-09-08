@@ -1,0 +1,47 @@
+﻿@model FestiSpec.Entity.EmployeeAbsence
+
+@{
+    ViewBag.Title = "Absentie";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Absentie</h2>
+@if (ViewBag.SuccesMessage != null)
+{
+    <h3 style="color:green;">@ViewBag.SuccesMessage</h3>
+}
+@if (ViewBag.ErrorMessage != null)
+{
+    <h3 style="color:red;">@ViewBag.ErrorMessage</h3>
+}
+
+@using (Html.BeginForm("Create", "Availability", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+
+        <div class="form-group">
+            <label class="control-label">datum van:</label>
+            <input type="date" name="fromDate" min="@DateTime.Now" />
+            @*@Html.TextBoxFor(model => model.Date, new { htmlAttributes = new { @class = "form-control" } })*@
+            <label class="control-label">datum tot:</label>
+            <input type="date" name="toDate" min="@DateTime.Now" />
+        </div>
+
+        <div class="form-group">
+            <label class="control-label">Vul tot datum in als je meerdere dagen opeenvolgend afwezig bent, bij een enkele dag afwezig vul alleen de eerste in.</label>
+            <br>
+            
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Toevoegen" class="btn btn-info" />
+        </div>
+    </div>
+}
+<br />
+
+    <a href="@Url.Action("AbsenceDates", "Availability")"><br /> Toon al uw absente datums</a>
+

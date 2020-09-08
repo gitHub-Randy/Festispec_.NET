@@ -1,0 +1,71 @@
+﻿<Window x:Class="FestiSpec.Views.Inspection.AddInspectionView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        mc:Ignorable="d"
+        Title="Inspectie Toevoegen" Height="500" Width="700"
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        DataContext="{Binding FestivalListViewModel, Source={StaticResource Locator}}">
+    <StackPanel Orientation="Horizontal">
+        <StackPanel Width="auto">
+
+            <StackPanel Orientation="Vertical">
+                <Label HorizontalAlignment="Center" FontSize="16">Festival</Label>
+                <Label HorizontalAlignment="Center" Content="{Binding SelectedFestival.Name}"/>
+                <!--geef het selectedfestival mee in de code behind-->
+            </StackPanel>
+
+            
+            <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Vertical">
+                    
+                <Label HorizontalAlignment="Center" FontSize="16">Selecteer Inspecteur</Label>
+                
+                    <Label FontSize="12">Inspecteur</Label>
+                    <DataGrid SelectedItem="{Binding SelectedEmployee}" ItemsSource="{Binding InspectorEmployees}" AutoGenerateColumns="False" IsReadOnly="True" Height="150" Width="350" HorizontalAlignment="Left">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Width="*" Header="Naam Inspecteur" Binding="{Binding Employee.Name}"/>
+                            <DataGridTextColumn Header="Afstand (km)"  Binding="{Binding DistanceKM}"/>
+                            <DataGridTextColumn Header="Tijd (uur)"  Binding="{Binding TravelTimeFormatted}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <StackPanel Orientation="Horizontal">
+                        <Label>Geselecteerd: </Label>
+                        <Label  Content="{Binding SelectedEmployee.Name}"/>
+                    </StackPanel>
+                </StackPanel>
+
+            <StackPanel Orientation="Vertical">
+                <Label HorizontalAlignment="Center" FontSize="16"> Selecteer Vragenlijst </Label>
+                <Label FontSize="12"> Vragenlijst </Label>
+                    
+                <DataGrid SelectedItem="{Binding SelectedQuestionList }" ItemsSource="{Binding SelectedFestival.QuestionLists}" AutoGenerateColumns="False" IsReadOnly="True" Height="150" Width="346" HorizontalAlignment="Left">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Width="25" Header="Naam Vragenlijst" Binding="{Binding VersionNumber}"/>
+                        <DataGridTextColumn Width="*" Header="Naam Vragenlijst" Binding="{Binding Title}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                    <StackPanel Orientation="Horizontal">
+                        <Label>Geselecteerd: </Label>
+                        <Label Content="{Binding SelectedQuestionList.Title}"/>
+                    </StackPanel>
+            </StackPanel>
+        </StackPanel>
+            
+        <StackPanel Orientation="Vertical" Width="auto">
+                <Label FontSize="16" HorizontalAlignment="Center">Start Datum</Label>
+                <xctk:DateTimePicker Text="{Binding NewStartDateString}" Width="350" HorizontalAlignment="Center"/>
+
+                <Label Margin="0,6,0,0" FontSize="16" HorizontalAlignment="Center">Eind Datum</Label>
+
+            <xctk:DateTimePicker Text="{Binding NewEndDateString}" Width="350" HorizontalAlignment="Center"/>
+                <Button Margin="0,25,0,0" VerticalAlignment="Bottom" Height="30" Background="Green" Command="{Binding AddInspectionCommand}" Content="Voeg Inspectie Toe" Width="350"/>
+        </StackPanel>
+            
+        </StackPanel>
+    </StackPanel>
+</Window>

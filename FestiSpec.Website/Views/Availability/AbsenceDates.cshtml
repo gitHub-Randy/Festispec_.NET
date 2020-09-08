@@ -1,0 +1,25 @@
+﻿@model FestiSpec.Entity.Employee
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Lijst van absente datums</h2>
+
+<table class="table">
+
+    @foreach (var item in Model.AbsencesDates)
+    {
+
+        <tr>
+            <td>
+                @Convert.ToDateTime(item.Date).ToShortDateString()
+            </td>
+            <td>
+                @Html.ActionLink("Verwijderen", "Delete", new { item.Date })
+            </td>
+        </tr>
+    }
+
+</table>

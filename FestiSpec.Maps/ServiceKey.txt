@@ -1,0 +1,5 @@
+﻿The servicekey for Geodan:
+6c4c63db-de9a-11e8-8aac-005056805b87
+
+The website for information about the API:
+https://www.geodanmaps.nl/ontwikkelaars/

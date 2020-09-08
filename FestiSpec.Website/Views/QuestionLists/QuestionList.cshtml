@@ -1,0 +1,415 @@
+@model FestiSpec.Entity.QuestionList
+
+@{
+    /**/
+
+    ViewBag.Title = "QuestionList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .img {
+        position: absolute;
+        z-index: 1;
+    }
+
+    #container {
+        display: inline-block;
+    }
+
+    #myCanvas {
+        position: relative;
+        z-index: 20;
+    }
+
+    .bd-example-modal-lg .modal-dialog {
+        display: table;
+        position: relative;
+        margin: 0 auto;
+        top: calc(33% - 24px);
+    }
+
+        .bd-example-modal-lg .modal-dialog .modal-content {
+            background-color: transparent;
+            border: none;
+        }
+</style>
+<h1>@Model.Title</h1>
+<h5>@Model.Description</h5>
+
+<br>
+
+<h3>@Model.Questions.FirstOrDefault().QuestionText</h3>
+
+@{ // Save QuestionType variable for better handeling
+    var questionType = @Model.Questions.FirstOrDefault().QuestionType.Type;
+    var questionAnswer = @Model.Questions.FirstOrDefault().Answers.Count != 0 ? @Model.Questions.FirstOrDefault().Answers.FirstOrDefault().AnswerText : "";
+    var imageURL = @Model.Questions.FirstOrDefault().Attachments.Count != 0 ? @Model.Questions.FirstOrDefault().Attachments.FirstOrDefault().FilePath : "";
+    var imageURLAnswer = @Model.Questions.FirstOrDefault().Answers.Count != 0 ?
+        @Model.Questions.FirstOrDefault().Answers.FirstOrDefault().Attachments.Count != 0
+        ? @Model.Questions.FirstOrDefault().Answers.FirstOrDefault().Attachments.FirstOrDefault().FilePath : "" : "";
+
+}
+
+@switch (questionType)
+{
+    case "Slider":
+        if (questionAnswer == null)
+        {
+            <input type="range" min="1" max="10" value="5" class="slider" name="slider" id="myRange" data-dirty="false" form="myformid">
+            <p>Cijfer: <span id="value"></span></p>
+        }
+        else
+        {
+            <input type="range" min="1" max="10" value="@questionAnswer" class="slider" name="slider" id="myRange" data-dirty="false" form="myformid">
+            <p>Cijfer: <span id="value"></span></p>
+        }
+        break;
+    case "Open vraag":
+        if (questionAnswer == null)
+        {
+            <textarea name="OpenVraag" form="myformid"></textarea>
+            @*<input type="text" name="OpenQuestion" data-dirty="false" form="myformid">*@
+        }
+        else
+        {
+            <textarea name="OpenVraag" form="myformid">@questionAnswer</textarea>
+            @*<input type="text" value="@questionAnswer" name="OpenQuestion" data-dirty="false" form="myformid">*@
+        }
+        break;
+    case "Meerkeuzevragen":
+        foreach (var answer in Model.Questions.FirstOrDefault().QuestionOptions.Split(';'))
+        {
+            if (questionAnswer == answer)
+            {
+                <input data-dirty="false" form="myformid" type="radio" checked name="Multi" value="@answer"> @answer <br>
+            }
+            else
+            {
+                <input data-dirty="false" form="myformid" type="radio" name="Multi" value="@answer"> @answer <br>
+            }
+        }
+        break;
+    case "Ja of Nee":
+        if (questionAnswer == null)
+        {
+            <input type="radio" name="ja/nee" value="Ja" data-dirty="false" form="myformid"><a>Ja</a> <br>
+            <input type="radio" name="ja/nee" value="Nee" data-dirty="false" form="myformid"><a>Nee</a>
+        }
+        else
+        {
+            if (questionAnswer == "Ja")
+            {
+                <input type="radio" name="ja/nee" value="Ja" checked data-dirty="false" form="myformid"><a>Ja</a> <br>
+                <input type="radio" name="ja/nee" value="Nee" data-dirty="false" form="myformid"><a>Nee</a>
+            }
+            else
+            {
+                <input type="radio" name="ja/nee" value="Ja" data-dirty="false" form="myformid"><a>Ja</a> <br>
+                <input type="radio" name="ja/nee" value="Nee" checked data-dirty="false" form="myformid"><a>Nee</a>
+            }
+        }
+        break;
+    case "Bijlage":
+
+        <div class="col-sm-4 d-flex pb-3">
+            <div class="custom-file">
+                <input type="file" name="myFile" class="custom-file-input" id="imageUpload" form="myformid" accept="image/*" />
+                <label class="custom-file-label plh">Foto uploaden</label>
+            </div>
+        </div>
+
+        <div class="col-sm-4 d-flex pb-3">
+            <div class="card card-inverse card-danger">
+                <div class="card-block">
+                    <h3 class="card-title">s foto</h3>
+                    <img class='AnswerImage' style="width:100%" src="data:image/png;base64,@imageURLAnswer" alt="" />
+                </div>
+            </div>
+        </div>
+        break;
+    case "Tekening":
+        <div align="center">
+            <div id="container">
+                <img class='img' width="500" height="300" src="data:image/png;base64,@imageURL" alt="" />
+                <canvas id="myCanvas" width="500" height="300" name="drawing" data-dirty="false" form="myformid"></canvas>
+                <br /><br />
+                <button type="button" class="btn btn-danger" onclick="javascript:clearArea();return false;">Tekengebied leegmaken</button>
+            </div>
+        </div>
+        break;
+    case "Tabel":
+        var options = Model.Questions.FirstOrDefault().QuestionOptions.Split(';').ToList();
+        var answers = Model.Questions.FirstOrDefault().Answers.Count != 0 ?
+            Model.Questions.FirstOrDefault().Answers.FirstOrDefault().AnswerText.Split(';').ToList() :
+            null;
+
+        <table>
+            <tr>
+                <th>@options[0]</th>
+                <th>@options[1]</th>
+            </tr>
+            @for (int i = 2; i < options.Count(); i++)
+            {
+            <tr>
+                <td>@options[i]</td>
+                @if (answers == null)
+                {
+                    <td><textarea rows="1" name="TableQuestion" form="myformid"></textarea></td>
+                }
+                else
+                {
+                    <td><textarea rows="1" name="TableQuestion" form="myformid">@answers[i-2]</textarea></td>
+                }
+
+            </tr>
+            }
+            </table>
+        break;
+    case "Antwoord per uur":
+        if (questionAnswer == null)
+        {
+            <input type="time" name="time" data-dirty="false" form="myformid">
+        }
+        else
+        {
+            <input type="time" name="time" data-dirty="false" form="myformid" value="@questionAnswer">
+        }
+        break;
+}
+
+</br>
+
+<div class="modal loading fade bd-example-modal-lg" data-backdrop="static" data-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body text-center" style="color:white">
+                <span class="fa fa-spinner fa-spin fa-5x"></span>
+                <h3>Uploaden...</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (@Model.Questions.FirstOrDefault().Index - 1 != 0)
+{@Html.ActionLink("Vorige ", "QuestionList", new { id = Model.Id, index = @Model.Questions.FirstOrDefault().Index - 1, inspectionId = @Model.Festival.Inspections.FirstOrDefault().Id })}
+@Html.ActionLink("Volgende", "QuestionList", new { id = Model.Id, index = @Model.Questions.FirstOrDefault().Index + 1, inspectionId = @Model.Festival.Inspections.FirstOrDefault().Id })
+
+@section scripts {
+    <script>
+
+        var reader = new FileReader();
+        /**-------------------------------------Save function---------------------------------*/
+        var to;
+        var data;
+        window.setInterval(function () {
+            var dirtyElements = $('#myformid').find('[data-dirty=true]').add('[form=myformid][data-dirty=true]');
+            if (dirtyElements.length > 0) {
+                saveAnswers(dirtyElements);
+            }
+        }, 1000); // 1 second  
+        function saveAnswers(dirtyElements) {
+            clearTimeout(to);
+            $('.main-message').fadeOut();
+            data = dirtyElements.val();
+            if ('@questionType' == "Tabel") data = $('textarea').map(function () { return $(this).val(); }).get().join(";");
+            if ('@questionType' == "Bijlage") data = $(".AnswerImage").attr('src').replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
+            if ('@questionType' == "Tekening") data = dirtyElements[0].toDataURL().replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
+            var model = { Id: "@Model.Questions.FirstOrDefault().Id", QuestionText: data, Index: "@Model.Festival.Inspections.FirstOrDefault().Id" };
+            $.post('/QuestionLists/ProcessQuestion', model, function () {
+                dirtyElements.attr('data-dirty', false);
+                $('.loading').modal('hide');
+                $('.main-message').fadeIn();
+                var duration = 3000; // 4 seconds
+                to = setTimeout(function () { $('.main-message').fadeOut(); }, duration);
+            });
+            //e.stopImmediatePropagation();
+            //return false;
+        };
+
+              
+
+        if ('@questionType' == "Bijlage") {
+            $("#imageUpload").change(function () {
+                var files = this.files;
+                var reader = new FileReader();
+                var name = this.value;
+                reader.onload = function (e) {
+                    $('.loading').modal('show');
+                    $('.plh').addClass("selected").html(name.split("C:\\fakepath\\").pop());
+                    $(".AnswerImage").attr('src', e.target.result);
+                };
+                reader.readAsDataURL(files[0]);
+            });
+
+            //$('#imageUpload').on('change', function (e) {
+
+            //    var tmppath = URL.createObjectURL(e.target.files[0]);
+
+            //    var fReader = new FileReader();
+            //    fReader.readAsDataURL(e.target.files[0]);
+            //    fReader.onloadend = function (event) {
+            //        data = event.target.result;
+            //    }
+
+            //    console.log(data);
+            //});
+        }
+        $(function () {
+            var formElements = $('#myformid')
+                .find('input, select, textarea, canvas')
+                .add('[form=myformid]')
+                .not(':disabled')
+                .each(function () {
+                    $(this).attr('data-dirty', false).change(function () {
+                        $(this).attr('data-dirty', true);
+                    });
+                });
+        });
+        /**-------------------------END------------------------ */
+
+
+
+        /**-----Slider value output to label----0**/
+        var slider = document.getElementById("myRange");
+        var output = document.getElementById("value");
+        if (slider != null) {
+            output.innerHTML = slider.value;
+
+            slider.oninput = function () {
+                output.innerHTML = this.value;
+            }
+        }
+        /**--------------END------------**/
+
+        /*----------------------- Canvas----------------------*/
+        if ('@questionType' == "Tekening") {
+            var mousePressed = false;
+            var lastX, lastY;
+
+            // Set up the canvas
+            const canvas = document.getElementById('myCanvas');
+            if (canvas != null) var ctx = canvas.getContext('2d');
+
+            var backgroundImage = new Image();
+            backgroundImage.src = "data:image/png;base64,@imageURLAnswer"
+            backgroundImage.onload = function () {
+                ctx.drawImage(backgroundImage, 0, 0, ctx.canvas.width, ctx.canvas.height);
+
+            };
+
+            // Set up mouse events for drawing
+            var drawing = false;
+            var mousePos = { x: 0, y: 0 };
+            var lastPos = mousePos;
+            canvas.addEventListener("mousedown", function (e) {
+                drawing = true;
+                lastPos = getMousePos(canvas, e);
+            }, false);
+            canvas.addEventListener("mouseup", function (e) {
+                drawing = false;
+                $(this).attr('data-dirty', true);
+            }, false);
+            canvas.addEventListener("mousemove", function (e) {
+                mousePos = getMousePos(canvas, e);
+            }, false);
+
+            // Get the position of the mouse relative to the canvas
+            function getMousePos(canvasDom, mouseEvent) {
+                var rect = canvasDom.getBoundingClientRect();
+                return {
+                    x: mouseEvent.clientX - rect.left,
+                    y: mouseEvent.clientY - rect.top
+                };
+            }
+
+            // Get a regular interval for drawing to the screen
+            window.requestAnimFrame = (function (callback) {
+                return window.requestAnimationFrame ||
+                    window.webkitRequestAnimationFrame ||
+                    window.mozRequestAnimationFrame ||
+                    window.oRequestAnimationFrame ||
+                    window.msRequestAnimaitonFrame ||
+                    function (callback) {
+                        //window.setTimeout(callback, 10);
+                    };
+            })();
+            // Draw to the canvas
+            function renderCanvas() {
+                if (drawing) {
+                    ctx.moveTo(lastPos.x, lastPos.y);
+                    ctx.lineTo(mousePos.x, mousePos.y);
+                    ctx.strokeStyle = "Red";
+                    ctx.lineWidth = "3";
+                    ctx.lineJoin = "round";
+                    ctx.stroke();
+                    lastPos = mousePos;
+                }
+            }
+
+            // Allow for animation
+            (function drawLoop() {
+                requestAnimFrame(drawLoop);
+                renderCanvas();
+            })();
+
+            // Set up touch events for mobile, etc
+            canvas.addEventListener("touchstart", function (e) {
+                mousePos = getTouchPos(canvas, e);
+                var touch = e.touches[0];
+                var mouseEvent = new MouseEvent("mousedown", {
+                    clientX: touch.clientX,
+                    clientY: touch.clientY
+                });
+                canvas.dispatchEvent(mouseEvent);
+            }, false);
+            canvas.addEventListener("touchend", function (e) {
+                var mouseEvent = new MouseEvent("mouseup", {});
+                canvas.dispatchEvent(mouseEvent);
+            }, false);
+            canvas.addEventListener("touchmove", function (e) {
+                var touch = e.touches[0];
+                var mouseEvent = new MouseEvent("mousemove", {
+                    clientX: touch.clientX,
+                    clientY: touch.clientY
+                });
+                canvas.dispatchEvent(mouseEvent);
+            }, false);
+
+            // Get the position of a touch relative to the canvas
+            function getTouchPos(canvasDom, touchEvent) {
+                var rect = canvasDom.getBoundingClientRect();
+                return {
+                    x: touchEvent.touches[0].clientX - rect.left,
+                    y: touchEvent.touches[0].clientY - rect.top
+                };
+            }
+
+            // Prevent scrolling when touching the canvas
+            // Prevent scrolling when touching the canvas
+            document.body.addEventListener("touchstart", function (e) {
+                if (e.target == canvas) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+            document.body.addEventListener("touchend", function (e) {
+                if (e.target == canvas) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+            document.body.addEventListener("touchmove", function (e) {
+                if (e.target == canvas) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+
+            function clearArea() {
+                // Use the identity matrix while clearing the canvas
+                $('.main-message').fadeOut();
+                ctx.beginPath();
+                ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+            }
+        }
+        /**-------------------------------END-----------------------------------*/
+    </script>
+}

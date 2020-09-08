@@ -1,0 +1,88 @@
+﻿@model FestiSpec.Entity.Inspection
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Inspectie details</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Gebruikersnaam
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Employee.Name)
+        </dd>
+
+        <dt>
+            Festivalnaam
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.QuestionList.Festival.Name)
+        </dd>
+
+        <dt>
+            Startdatum
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StartDate)
+        </dd>
+
+        <dt>
+            Einddatum
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EndDate)
+        </dd>
+
+        <dt>
+            Aanwezig
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Present)
+        </dd>
+
+        <dt>
+            Reden Afwezig
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReasonsAbsent)
+        </dd>
+
+        <dt>
+            Stad
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.QuestionList.Festival.City)
+        </dd>
+
+        <dt>
+            Huisnummer
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.QuestionList.Festival.HouseNumber)
+        </dd>
+
+        <dt>
+            Locatie opmerking
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.QuestionList.Festival.LocationComment)
+        </dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Terug naar lijst", "Index")
+</p>
